@@ -2,9 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import cm
-from mpl_toolkits import mplot3d
-from IPython import get_ipython
-from sklearn.model_selection import train_test_split
+#from IPython import get_ipython
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_log_error
 from sklearn.neural_network import MLPRegressor
@@ -254,7 +252,7 @@ class BD_Predict:
         return Setting_EndTime(self.setting) - GetLocalTimeNow()
 
     def PlotRank(self, seconds=-1):
-        get_ipython().run_line_magic('matplotlib', 'inline')
+        #get_ipython().run_line_magic('matplotlib', 'inline')
         if seconds == -1:
             seconds = GetNumSecondFromDTEnd(Setting_EndTime(self.setting))
         show = 20000
@@ -271,6 +269,7 @@ class BD_Predict:
             data[6,i] = Predict(self.powerlr, data[0,i], seconds)
 
         # plot the index for the x-values
+        plt.figure()
         plt.plot(data[0], data[1], label='LR')
         plt.plot(data[0], data[2], label='NN')
         plt.plot(data[0], data[3], label='RCV')
@@ -285,7 +284,7 @@ class BD_Predict:
         return data
 
     def PlotTime(self, rank=5000, from_now=False):
-        get_ipython().run_line_magic('matplotlib', 'inline')
+        #get_ipython().run_line_magic('matplotlib', 'inline')
         if from_now:
             max_time = GetNumSecondFromDTEnd(Setting_EndTime(self.setting))
         else:
@@ -303,6 +302,7 @@ class BD_Predict:
             data[6,i] = Predict(self.powerlr, rank, data[0,i])
 
         # plot the index for the x-values
+        plt.figure()
         plt.plot(data[0], data[1], label='LR')
         plt.plot(data[0], data[2], label='NN')
         plt.plot(data[0], data[3], label='RCV')
@@ -317,7 +317,7 @@ class BD_Predict:
         return data
 
     def Plot3D_Data(self):
-        get_ipython().run_line_magic('matplotlib', 'qt5')
+        #get_ipython().run_line_magic('matplotlib', 'qt5')
         ax = plt.axes(projection='3d')
         X = self.X['dt']
         Y = self.X['rank']
@@ -329,7 +329,7 @@ class BD_Predict:
         plt.show()
 
     def Plot3D_Z(self, model='nn',from_now=False):
-        get_ipython().run_line_magic('matplotlib', 'qt5')
+        #get_ipython().run_line_magic('matplotlib', 'qt5')
 
         n = 500
         rank_x = np.zeros((n,))
@@ -389,7 +389,7 @@ target_rank = 10000
 bd = BD_Predict(drop_topten=True)
 rank_points = bd.PlotRank(0)
 time_points = bd.PlotTime(target_rank,from_now=False)
-#bd.Plot3D_Z('lr')
+#
 print('Target Rank: ',target_rank)
 print('Time Left: ',bd.TimeLeft(),'[',NumSecond(bd.TimeLeft()),'s]')
 bd.PredictNow(target_rank)
